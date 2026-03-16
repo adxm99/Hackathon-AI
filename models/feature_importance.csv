@@ -1,0 +1,93 @@
+feature,importance
+num__DaysSinceLastReview,0.4386933035217449
+num__TenureYears,0.12703016664486114
+num__Salary,0.03709712692748435
+num__Age,0.03398971025386216
+num__Absences,0.031492069441458104
+num__EngagementSurvey,0.027597897870337704
+num__PositionID,0.02424304890523188
+num__DaysLateLast30,0.01662046888281206
+cat__RecruitmentSource_Google Search,0.016282266649689157
+num__MaritalStatusID,0.013138692298515225
+num__SpecialProjectsCount,0.012225733765790408
+num__EmpSatisfaction,0.010725493343688748
+cat__PerformanceScore_Needs Improvement,0.010195636810194541
+cat__RecruitmentSource_LinkedIn,0.01002503571871751
+num__PerfScoreID,0.009718119618020486
+cat__MaritalDesc_Single,0.009622300572665147
+num__MarriedID,0.00902018218990172
+num__DeptID,0.00891540987203693
+cat__MaritalDesc_Married,0.008832270222164566
+cat__RecruitmentSource_CareerBuilder,0.008167864672498438
+num__FromDiversityJobFairID,0.008031599701557446
+cat__RecruitmentSource_Diversity Job Fair,0.0071371772635478005
+num__GenderID,0.007010752195513513
+cat__Department_Production,0.006523236834820279
+cat__Position_Production Technician II,0.006318268328850409
+cat__Position_Database Administrator,0.0061823929265079364
+cat__RecruitmentSource_Employee Referral,0.005760353585944477
+cat__RecruitmentSource_Indeed,0.005520276867392108
+cat__MaritalDesc_Divorced,0.0054675039873788986
+cat__PerformanceScore_Fully Meets,0.0050110129023786
+cat__Department_IT/IS,0.004910143999414843
+cat__Position_Production Technician I,0.0046013744707139965
+cat__State_MA,0.004045940363040795
+cat__PerformanceScore_Exceeds,0.003938986621746478
+cat__Position_Area Sales Manager,0.003435137838705464
+cat__CitizenDesc_US Citizen,0.0034161074353585242
+cat__CitizenDesc_Non-Citizen,0.003362289039304071
+cat__MaritalDesc_Separated,0.003330552195117329
+cat__MaritalDesc_Widowed,0.003294020239173488
+cat__RecruitmentSource_Website,0.002758374587129786
+cat__Department_Sales,0.002553122799820785
+cat__Position_Sr. DBA,0.002368586418461669
+cat__State_TN,0.0023408043585533655
+cat__PerformanceScore_PIP,0.0021419135993994663
+cat__Position_Software Engineer,0.0020696902595547942
+cat__Department_Software Engineering,0.0020203069249268213
+cat__Position_Data Analyst,0.0018818916866367344
+cat__Position_Principal Data Architect,0.0017096718986934476
+cat__Position_Enterprise Architect,0.0016831865400214815
+cat__Position_Administrative Assistant,0.001349207130069847
+cat__Position_Production Manager,0.0013439557411154392
+cat__RecruitmentSource_On-line Web application,0.0012725275086006426
+cat__CitizenDesc_Eligible NonCitizen,0.0011985049938537098
+cat__Department_Admin Offices,0.0011509639060802907
+cat__State_OH,0.0011300164950553142
+cat__Position_IT Support,0.0010643103911337662
+cat__State_PA,0.0010178333984117024
+cat__Position_Sr. Network Engineer,0.0008932262597876509
+cat__Position_Sales Manager,0.0008292930969683419
+cat__Position_IT Manager - DB,0.0007203357711328456
+cat__State_CT,0.0005977592019919221
+cat__State_VA,0.0005744771770064939
+cat__Position_Sr. Accountant,0.00040071907116363007
+cat__State_NY,0.00029588675740687174
+cat__Position_Network Engineer,0.0002881032565308863
+cat__Position_Director of Operations,0.00027224616758268527
+cat__Position_BI Director,0.00025398431261594687
+cat__State_ND,0.0002445391286947931
+cat__State_TX,0.00023753013547901878
+cat__RecruitmentSource_Other,0.0002269803244540312
+cat__Position_Software Engineering Manager,0.000221542584274099
+cat__State_RI,0.00019694028330525178
+cat__State_MT,0.0001894886450940453
+cat__State_KY,0.00017803485399237387
+cat__State_WA,0.00017224052165213232
+cat__State_IN,0.00014489930087300886
+cat__State_ME,0.00014247208280378001
+cat__State_VT,0.00013153922833407196
+cat__State_UT,0.00012947059794205854
+cat__State_NV,0.00012523853546346673
+cat__State_AL,0.00010733559301838062
+cat__Position_IT Director,8.774307082057735e-05
+cat__Position_Shared Services Manager,8.634286666321963e-05
+cat__Position_Data Architect,7.315567219711015e-05
+cat__Position_Director of Sales,6.87220859895793e-05
+cat__Position_Accountant I,4.6339666421238504e-05
+cat__Position_BI Developer,3.988841430994742e-05
+cat__State_FL,3.1632808938109563e-05
+cat__Position_Senior BI Developer,7.098911431700686e-06
+cat__Position_CIO,0.0
+cat__State_NC,0.0
+cat__State_GA,0.0

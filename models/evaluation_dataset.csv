@@ -1,0 +1,79 @@
+MarriedID,MaritalStatusID,GenderID,DeptID,PerfScoreID,FromDiversityJobFairID,Salary,PositionID,Position,State,MaritalDesc,CitizenDesc,Department,RecruitmentSource,PerformanceScore,EngagementSurvey,EmpSatisfaction,SpecialProjectsCount,DaysLateLast30,Absences,Age,TenureYears,DaysSinceLastReview,Termd,pred_logit,proba_logit,pred_rf,proba_rf,Sex,RaceDesc,HispanicLatino
+0,0,1,5,3,0,65893,20,Production Technician II,MA,Single,US Citizen,Production,LinkedIn,Fully Meets,4.07,4,0,0,13,33.6,4.49,-58,0,0,0.01338110951887611,0,0.031746117546011005,M,White,No
+0,0,0,6,4,0,74241,3,Area Sales Manager,CA,Single,US Citizen,Sales,Indeed,Exceeds,4.77,5,0,0,14,30.1,7.98,-26,0,0,0.01429536699058752,0,0.09547033854029285,F,White,No
+1,1,0,5,3,0,54005,19,Production Technician I,MA,Married,US Citizen,Production,Google Search,Fully Meets,3.6,5,0,0,16,-54.9,7.27,1402,1,1,0.9961443513707372,1,0.831568736698412,F,White,No
+0,4,0,5,3,0,45046,19,Production Technician I,MA,Widowed,US Citizen,Production,LinkedIn,Fully Meets,4.5,5,0,0,2,40.4,4.26,-29,0,0,0.016572712156014184,0,0.1548262665363395,F,Asian,No
+0,0,1,5,3,0,64246,20,Production Technician II,MA,Single,US Citizen,Production,LinkedIn,Fully Meets,5.0,3,0,0,20,30.4,5.14,-7,0,0,0.028082233139328044,0,0.11404669772604968,M,White,Yes
+1,1,1,5,3,0,48285,19,Production Technician I,MA,Married,US Citizen,Production,LinkedIn,Fully Meets,5.0,3,0,0,2,39.6,6.5,-13,0,0,0.0543850206603086,0,0.14361207027079423,M,White,No
+1,1,0,5,3,0,64991,19,Production Technician I,MA,Married,US Citizen,Production,Indeed,Fully Meets,4.84,5,0,0,15,30.3,10.98,-2,0,0,0.17128349818261077,0,0.2457139227866688,F,White,No
+1,1,0,5,3,0,65714,18,Production Manager,MA,Married,US Citizen,Production,LinkedIn,Fully Meets,4.83,5,0,0,15,-56.7,6.25,-44,0,0,0.04507506513745753,0,0.1980245706041324,F,White,No
+0,0,1,3,3,0,84903,22,Senior BI Developer,MA,Single,US Citizen,IT/IS,Indeed,Fully Meets,3.42,4,7,0,17,37.5,1.88,-3,0,0,0.01884311057198049,0,0.03323204005852991,M,Asian,No
+0,0,1,5,3,0,51259,19,Production Technician I,MA,Single,US Citizen,Production,Indeed,Fully Meets,4.3,4,0,0,1,36.1,4.64,-49,0,0,0.013962518681786334,0,0.05473438594251559,M,White,No
+0,0,0,5,3,0,63763,20,Production Technician II,MA,Single,US Citizen,Production,Employee Referral,Fully Meets,4.51,4,0,0,3,38.8,6.83,-51,0,0,0.018292619064473783,0,0.14572771977183538,F,Black or African American,No
+0,0,0,5,4,0,73330,20,Production Technician II,MA,Single,US Citizen,Production,Indeed,Exceeds,4.2,4,0,0,19,36.8,5.37,-42,0,0,0.013486997821766036,0,0.10216129778613774,F,Black or African American,No
+0,0,0,5,1,0,52674,19,Production Technician I,MA,Single,US Citizen,Production,LinkedIn,PIP,2.33,2,0,6,3,38.3,4.76,298,1,0,0.3916594100216753,1,0.5112456271326526,F,Two or more races,No
+0,0,1,5,1,0,55800,20,Production Technician II,MA,Single,US Citizen,Production,LinkedIn,PIP,3.0,2,0,6,6,33.5,7.38,2178,1,1,0.9999688775700251,1,0.6993744803985591,M,White,No
+0,2,0,5,3,0,46799,19,Production Technician I,MA,Divorced,Eligible NonCitizen,Production,Google Search,Fully Meets,3.17,4,0,0,14,34.2,7.63,274,1,0,0.1899248109555206,1,0.6760313406420088,F,Asian,No
+1,1,1,5,3,0,61355,19,Production Technician I,MA,Married,US Citizen,Production,LinkedIn,Fully Meets,4.7,3,0,0,4,33.8,4.87,-10,0,0,0.03899954979705825,0,0.06726395672025728,M,Asian,No
+1,1,0,3,3,0,89883,9,Data Analyst,MA,Married,US Citizen,IT/IS,Employee Referral,Fully Meets,3.69,5,6,0,15,37.2,3.87,-44,0,0,0.01922991428414245,0,0.06673094405376137,F,White,No
+0,0,1,3,4,0,138888,13,IT Manager - Support,MA,Single,US Citizen,IT/IS,Indeed,Exceeds,4.3,5,5,0,4,-51.5,4.99,-3,0,0,0.04235778784232039,0,0.11319742184927051,M,Black or African American,No
+1,1,0,5,1,0,64021,19,Production Technician I,MA,Married,US Citizen,Production,Indeed,PIP,2.4,2,1,6,20,-49.5,6.86,-55,0,1,0.5395712010548989,0,0.3533446145241937,F,White,No
+1,1,0,5,3,0,57748,19,Production Technician I,MA,Married,US Citizen,Production,Google Search,Fully Meets,3.13,3,0,0,16,-36.3,7.15,1062,1,1,0.9744950257093173,1,0.8132578403009061,F,White,No
+1,1,0,3,3,0,105700,8,Database Administrator,MA,Married,US Citizen,IT/IS,Indeed,Fully Meets,3.75,3,5,0,2,32.2,3.99,-41,0,0,0.014453714290344036,0,0.21624755354375708,F,Asian,No
+1,1,0,5,3,0,60070,19,Production Technician I,MA,Married,US Citizen,Production,Google Search,Fully Meets,5.0,3,0,0,7,27.3,7.75,632,1,1,0.7370562695825703,1,0.7868304607594145,F,White,No
+0,2,0,5,3,0,64919,19,Production Technician I,MA,Divorced,US Citizen,Production,Indeed,Fully Meets,4.2,3,0,0,2,-40.0,5.37,-9,0,0,0.03401478889032563,0,0.07434663321765733,F,Asian,No
+0,0,1,5,2,0,59144,19,Production Technician I,MA,Single,US Citizen,Production,LinkedIn,Needs Improvement,2.0,3,0,5,16,39.4,7.48,975,1,1,0.9899649086072241,1,0.776250748265955,M,Black or African American,No
+1,1,0,5,3,0,74669,18,Production Manager,MA,Married,US Citizen,Production,Indeed,Fully Meets,4.16,5,0,0,6,41.6,8.19,1398,1,1,0.9811399207859987,1,0.7260606104534043,F,White,No
+1,1,0,1,3,1,63000,1,Accountant I,MA,Married,US Citizen,Admin Offices,Diversity Job Fair,Fully Meets,4.5,2,6,0,14,31.1,10.18,-14,0,0,0.03699775752633182,0,0.23478912888873021,F,Black or African American,No
+0,2,0,5,3,0,50825,19,Production Technician I,MA,Divorced,US Citizen,Production,Google Search,Fully Meets,5.0,4,0,0,2,29.3,7.48,1065,1,1,0.9374996974537384,1,0.7929927957333305,F,White,No
+0,0,1,4,4,0,92989,24,Software Engineer,MA,Single,US Citizen,Software Engineering,LinkedIn,Exceeds,4.5,5,5,0,1,35.7,4.49,-48,0,0,0.026968403291049513,0,0.0838788065889675,M,White,No
+0,0,0,6,3,0,58370,3,Area Sales Manager,OR,Single,US Citizen,Sales,Indeed,Fully Meets,3.69,3,0,0,18,-46.3,4.26,-27,0,0,0.008717020743234948,0,0.03608683690856639,F,Black or African American,No
+1,1,0,2,3,0,250000,16,President & CEO,MA,Married,US Citizen,Executive Office,Indeed,Fully Meets,4.83,3,0,0,10,-35.7,6.5,-16,0,0,0.05161781543910828,0,0.16099100367911384,F,White,Yes
+1,1,0,6,3,0,57859,3,Area Sales Manager,AZ,Married,US Citizen,Sales,Indeed,Fully Meets,2.81,3,0,0,16,27.6,7.49,-16,0,0,0.02083326517499572,0,0.1673304178490089,F,Two or more races,No
+0,0,0,3,3,0,65707,14,IT Support,CT,Single,US Citizen,IT/IS,LinkedIn,Fully Meets,4.7,4,5,0,1,-49.5,8.67,-31,0,0,0.02603028454296536,0,0.12441542151949492,F,White,No
+1,1,0,5,3,0,62810,19,Production Technician I,MA,Married,US Citizen,Production,CareerBuilder,Fully Meets,3.93,3,0,0,20,32.0,5.98,-29,0,0,0.08691752158415854,0,0.22006956476347336,F,Black or African American,No
+0,0,0,5,3,0,53171,19,Production Technician I,MA,Single,US Citizen,Production,LinkedIn,Fully Meets,4.2,4,0,0,12,35.1,7.63,-56,0,0,0.027695070105328123,0,0.20269620879526173,F,Black or African American,Yes
+1,1,1,6,3,0,70545,3,Area Sales Manager,NH,Married,US Citizen,Sales,Indeed,Fully Meets,3.6,5,0,0,9,30.3,4.37,-29,0,0,0.010792987553656442,0,0.09679730838999397,M,American Indian or Alaska Native,No
+0,0,1,6,3,0,65310,3,Area Sales Manager,CO,Single,US Citizen,Sales,Indeed,Fully Meets,4.3,5,0,0,13,39.1,5.37,-21,0,0,0.009269814048420545,0,0.03196245099807418,M,White,No
+0,3,0,5,3,0,58275,20,Production Technician II,MA,Separated,US Citizen,Production,Google Search,Fully Meets,4.62,5,0,0,1,-32.2,7.75,1336,1,1,0.9821219115437624,1,0.747946887379948,F,Black or African American,No
+0,0,0,5,3,0,68099,20,Production Technician II,MA,Single,US Citizen,Production,CareerBuilder,Fully Meets,5.0,3,0,0,15,-53.7,7.98,2162,1,1,0.9999102009943079,1,0.8022880981024104,F,White,No
+1,1,1,5,3,0,64738,19,Production Technician I,MA,Married,US Citizen,Production,Google Search,Fully Meets,4.1,3,0,0,10,36.3,6.63,-52,0,0,0.08132836518250446,0,0.1961547959835251,M,Asian,No
+0,0,0,5,3,0,61242,19,Production Technician I,MA,Single,US Citizen,Production,LinkedIn,Fully Meets,4.1,3,0,0,7,-53.7,6.15,-16,0,0,0.03959801279787101,0,0.12107367782358082,F,Black or African American,No
+0,2,0,5,4,0,62425,19,Production Technician I,MA,Divorced,US Citizen,Production,LinkedIn,Exceeds,4.1,4,0,0,16,-54.2,5.64,1401,1,1,0.9889349836816126,1,0.6182718075383857,F,White,No
+0,2,0,5,3,0,64971,20,Production Technician II,MA,Divorced,Eligible NonCitizen,Production,Google Search,Fully Meets,4.5,4,0,0,10,37.3,7.27,2628,1,1,0.9999676906512872,1,0.7959366103653532,F,Black or African American,No
+0,0,1,5,3,0,74312,18,Production Manager,MA,Single,US Citizen,Production,Indeed,Fully Meets,3.39,3,0,0,14,-51.2,5.25,1776,1,1,0.9971401137766482,1,0.5285722932174214,M,Asian,No
+1,1,0,3,3,0,50750,15,Network Engineer,MA,Married,US Citizen,IT/IS,LinkedIn,Fully Meets,3.31,3,6,0,7,37.7,4.25,-6,0,0,0.017144483618853536,0,0.05393457259637566,F,White,No
+1,1,1,5,3,0,62162,20,Production Technician II,MA,Married,US Citizen,Production,Indeed,Fully Meets,3.25,5,0,0,15,41.4,7.75,-13,0,0,0.06385142012088306,0,0.2892472631980497,M,White,No
+0,0,1,5,3,0,53180,19,Production Technician I,MA,Single,US Citizen,Production,Google Search,Fully Meets,5.0,5,0,0,4,31.8,7.75,183,1,0,0.17069748837574766,1,0.7239992403780583,M,White,No
+0,0,1,5,2,0,53060,19,Production Technician I,MA,Single,US Citizen,Production,LinkedIn,Needs Improvement,4.25,3,0,4,6,39.1,4.87,-34,0,0,0.10288923034207084,0,0.21207664490380154,M,Black or African American,No
+0,0,1,5,3,0,58709,19,Production Technician I,MA,Single,US Citizen,Production,Google Search,Fully Meets,4.6,4,0,0,7,35.5,6.86,-44,0,0,0.04939554794274319,0,0.16680286742274333,M,Two or more races,No
+0,3,0,5,1,0,56847,20,Production Technician II,MA,Separated,US Citizen,Production,Indeed,PIP,3.0,1,0,2,5,29.4,4.49,-55,0,0,0.00583452679760786,0,0.0901653395261169,F,White,No
+0,0,1,6,3,0,67251,3,Area Sales Manager,CT,Single,US Citizen,Sales,CareerBuilder,Fully Meets,4.3,3,0,2,7,-44.7,7.32,-26,0,0,0.1785079294538931,0,0.16660626744661738,M,Black or African American,No
+1,1,1,5,3,0,64724,19,Production Technician I,MA,Married,US Citizen,Production,Google Search,Fully Meets,5.0,3,0,0,13,30.8,7.49,2507,1,1,0.9999873768508474,1,0.7900582490398336,M,Asian,No
+0,3,0,5,3,0,60436,19,Production Technician I,MA,Separated,US Citizen,Production,LinkedIn,Fully Meets,5.0,5,0,0,9,-45.3,4.99,-20,0,0,0.028556288530779645,0,0.04492389777446589,F,White,No
+1,1,1,6,3,0,61809,3,Area Sales Manager,ID,Married,US Citizen,Sales,CareerBuilder,Fully Meets,3.98,3,0,0,4,-35.8,4.64,-27,0,0,0.03759293592298256,0,0.1465879296458262,M,White,No
+0,0,1,5,4,0,60656,20,Production Technician II,MA,Single,US Citizen,Production,Indeed,Exceeds,4.3,3,0,0,4,-44.8,4.26,-27,0,0,0.020969581373414665,0,0.04662076768148855,M,White,No
+0,0,1,5,3,0,66541,20,Production Technician II,MA,Single,US Citizen,Production,Employee Referral,Fully Meets,3.11,5,0,0,4,42.9,4.37,-42,0,0,0.012994321730015055,0,0.05812056914058902,M,Black or African American,No
+0,0,0,5,3,0,75188,18,Production Manager,MA,Single,US Citizen,Production,Google Search,Fully Meets,4.52,4,0,0,4,-54.9,4.29,-14,0,0,0.019391313655846894,0,0.12617295833320163,F,White,No
+0,0,0,5,3,0,55688,19,Production Technician I,MA,Single,US Citizen,Production,CareerBuilder,Fully Meets,5.0,4,0,0,10,42.3,3.76,-20,0,0,0.021326015048884723,0,0.1399595143211317,F,White,No
+1,1,0,1,3,0,49920,2,Administrative Assistant,MA,Married,US Citizen,Admin Offices,Indeed,Fully Meets,3.24,3,4,0,6,33.3,3.87,1357,1,1,0.8022318718288766,1,0.6045409805038827,F,Black or African American,No
+0,2,0,5,3,0,58062,19,Production Technician I,MA,Divorced,US Citizen,Production,Google Search,Fully Meets,3.6,5,0,0,9,35.4,7.98,2886,1,1,0.9999954939998713,1,0.7622490987009185,F,White,No
+1,1,1,3,3,0,99020,4,BI Developer,MA,Married,US Citizen,IT/IS,Indeed,Fully Meets,4.2,5,5,0,8,29.5,1.7,-27,0,0,0.008140587278087419,0,0.0667794416286235,M,Black or African American,No
+0,2,1,5,3,0,61729,19,Production Technician I,MA,Divorced,US Citizen,Production,Indeed,Fully Meets,3.8,5,0,0,19,34.0,7.27,331,1,0,0.3135915615436869,1,0.7266254509240611,M,White,No
+0,0,0,5,3,1,59728,19,Production Technician I,MA,Single,US Citizen,Production,Diversity Job Fair,Fully Meets,4.3,4,0,0,16,-50.8,6.98,1674,1,1,0.9974796479223894,1,0.7484750563527811,F,Black or African American,Yes
+1,1,1,6,3,0,63291,3,Area Sales Manager,TX,Married,US Citizen,Sales,Website,Fully Meets,3.4,4,0,0,7,34.5,2.49,-28,0,0,0.006134299603578081,0,0.09425580280075521,M,Two or more races,No
+1,1,0,5,4,0,62910,19,Production Technician I,MA,Married,US Citizen,Production,Indeed,Exceeds,5.0,3,0,0,19,29.3,4.49,-57,0,0,0.02630935139899836,0,0.08932116569228384,F,White,No
+1,1,1,5,1,0,53189,19,Production Technician I,MA,Married,US Citizen,Production,Indeed,PIP,1.12,2,0,4,9,-48.3,4.49,-30,0,0,0.1392995710380246,0,0.22108857798849574,M,White,No
+1,1,1,3,3,0,75281,15,Network Engineer,MA,Married,US Citizen,IT/IS,CareerBuilder,Fully Meets,5.0,3,5,0,11,30.7,3.99,1357,1,1,0.9876890791643673,1,0.5583608240794501,M,White,No
+0,0,0,5,3,1,62659,19,Production Technician I,MA,Single,US Citizen,Production,Diversity Job Fair,Fully Meets,4.18,4,0,0,17,-49.4,6.75,1061,1,1,0.9400414865650181,1,0.7431645345701824,F,Black or African American,No
+1,1,1,5,1,1,68898,20,Production Technician II,MA,Married,US Citizen,Production,Diversity Job Fair,PIP,3.0,3,0,3,10,-45.8,8.68,2858,1,1,0.9999987144819115,1,0.7845903638148384,M,Black or African American,No
+1,1,0,5,2,0,61584,19,Production Technician I,MA,Married,US Citizen,Production,Indeed,Needs Improvement,3.88,4,0,0,6,40.1,5.98,-17,0,0,0.012485070849922444,0,0.2697609909817947,F,Black or African American,No
+0,2,1,5,2,0,68051,18,Production Manager,MA,Divorced,US Citizen,Production,CareerBuilder,Needs Improvement,4.13,2,0,3,3,-57.0,8.45,-13,0,0,0.37912576223188166,0,0.35662657590345637,M,White,No
+0,4,1,5,3,0,67176,20,Production Technician II,MA,Widowed,US Citizen,Production,Other,Fully Meets,4.1,4,0,0,15,-56.7,11.52,3093,1,1,0.9999998521969401,1,0.809587183536104,M,White,No
+1,1,1,3,2,1,157000,13,IT Manager - Infra,MA,Married,Eligible NonCitizen,IT/IS,Diversity Job Fair,Needs Improvement,2.39,3,6,4,13,32.2,6.88,-52,0,0,0.26781413803930987,0,0.4272549154858738,M,Black or African American,Yes
+0,0,1,5,4,0,70507,20,Production Technician II,MA,Single,US Citizen,Production,LinkedIn,Exceeds,5.0,3,0,0,7,-39.8,5.98,1078,1,1,0.9275365571354452,1,0.6386356820136845,M,White,No
+0,0,1,1,3,0,63003,1,Accountant I,MA,Single,US Citizen,Admin Offices,Indeed,Fully Meets,3.9,5,5,0,9,32.3,4.26,-17,0,0,0.004034065319122465,0,0.05858106226107036,M,White,No
+1,1,0,5,3,0,74226,20,Production Technician II,MA,Married,Eligible NonCitizen,Production,LinkedIn,Fully Meets,4.3,3,0,0,14,39.8,6.75,-13,0,0,0.030288612072027498,0,0.21330621958103338,F,Asian,No
+1,1,1,5,3,0,59369,20,Production Technician II,MA,Married,US Citizen,Production,Indeed,Fully Meets,4.2,4,0,0,6,40.1,8.34,2799,1,1,0.9999934139620503,1,0.7732222652821791,M,White,No
+0,0,0,4,3,0,101199,24,Software Engineer,MA,Single,US Citizen,Software Engineering,CareerBuilder,Fully Meets,3.79,5,5,0,8,39.5,6.98,-24,0,0,0.08733799353447579,0,0.21905210911223585,F,Black or African American,No
+1,1,0,5,3,0,54828,19,Production Technician I,MA,Married,US Citizen,Production,Google Search,Fully Meets,4.2,4,0,0,13,41.8,7.09,-52,0,0,0.058734626573881996,0,0.23167885500906307,F,White,No

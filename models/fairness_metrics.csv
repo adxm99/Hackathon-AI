@@ -1,0 +1,10 @@
+group_column,group_value,count,accuracy,recall,false_positive_rate,false_negative_rate
+Sex,F,43,0.9302,0.8667,0.0357,0.1333
+Sex,M,35,0.9429,0.8182,0.0,0.1818
+RaceDesc,American Indian or Alaska Native,1,1.0,0.0,0.0,0.0
+RaceDesc,Asian,10,0.9,0.6667,0.0,0.3333
+RaceDesc,Black or African American,22,1.0,1.0,0.0,0.0
+RaceDesc,Two or more races,4,0.75,0.0,0.0,1.0
+RaceDesc,White,41,0.9268,0.8667,0.0385,0.1333
+HispanicLatino,No,73,0.9315,0.84,0.0208,0.16
+HispanicLatino,Yes,5,1.0,1.0,0.0,0.0
