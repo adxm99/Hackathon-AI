@@ -1,39 +1,47 @@
-# Hackathon-AI
+# Hackathon Trusted AI x HR - Team [Name]
 
-## Project Overview
-This project aims to build a trusted AI solution for Human Resources in order to identify employees at risk of leaving the company.
+## 1. Objectives & Pitch
+Our goal is to assist HR managers in identifying employees at risk of attrition (`Termd`) and understanding the key factors behind this risk. 
+This solution adheres to the principles of **Responsible AI**:
+1.  **Explainability (XAI):** We avoid "black box" models by integrating SHAP to explain exactly why an employee is flagged as a risk.
+2.  **Ethical AI:** We evaluate our model for fairness against sensitive attributes (e.g., Sex) to ensure no algorithmic discrimination occurs.
 
-## Objective
-The goal is to predict employee attrition (`Termd`), explain the main factors behind the prediction, and evaluate fairness across sensitive groups.
+## 2. Approach & Scope
+We tackle both structured and unstructured data:
+-   **Structured ML:** An XGBoost model trained on demographic and performance data.
+-   **NLP Integration:** Simulation of unstructured HR feedback (e.g., exit interviews, transfer requests) processed via NLP techniques (TF-IDF) and merged with the structured pipeline to create a **Hybrid Model**.
 
-## Chosen Themes
-- Ethical AI
-- Explainable AI
+## 3. Persona
+**HR Manager / Director:** Needs a transparent dashboard to view at-risk talent, comprehend the reasons (salary, manager, environment), and take preventive actions.
 
-## Use Case
-This solution is designed for HR managers who want to:
-- identify employees at risk of leaving
-- understand the reasons behind the risk
-- make more transparent and fair decisions
+---
 
-## Dataset
-We use the HR dataset provided for the hackathon, containing employee demographic, professional, and performance-related variables.
+## 4. Technical Documentation
 
-## Repository Structure
-- `data/` : raw and processed data
-- `notebooks/` : data exploration and experiments
-- `src/` : preprocessing, training, evaluation, fairness and explainability scripts
-- `docs/` : technical documentation, data card, model card, architecture, executive summary
-- `slides/` : presentation materials
-- `demo/` : demo material
-- `assets/` : figures and visuals
+### Repository Structure
+-   `data/` : Contains the HR dataset (`HRDataset_v14.csv`).
+-   `notebooks/` :
+    -   `01_EDA.py` : Data exploration and distribution analysis.
+    -   `02_Baseline_Model.py` : Base XGBoost predicting `Termd` with global SHAP explanations.
+    -   `03_NLP_Hybrid_Model.py` : Creation of simulated HR texts, TF-IDF extraction, and hybrid XGBoost model.
+    -   `04_Ethical_AI_Fairness.py` : Audit of the model's predictions using Fairlearn to check Demographic Parity.
+-   `docs/` : Contains the Data Card and Model Card.
 
-## Target Variable
-- `Termd` = 1 if the employee left the company
-- `Termd` = 0 otherwise
+### Setup Instructions
+1.  Initialize a virtual environment (optional but recommended).
+2.  Install dependencies: `pip install pandas scikit-learn xgboost shap fairlearn`
+3.  Run the notebooks sequentially to reproduce the pipeline.
 
-## Team Members
-- Add names here
+---
 
-## Status
-Work in progress.
+## 5. Architecture Scheme
+1.  **Input:** Structured HR Database + Unstructured HR Notes.
+2.  **Preprocessing:** 
+    -   StandardScaler for numerics.
+    -   OneHotEncoder for categoricals.
+    -   TF-IDF Vectorizer for text.
+3.  **Modeling:** XGBoost Classifier (Hybrid Feature Union).
+4.  **Audit Layer:** 
+    -   *SHAP Explainer* (Identify top drivers of attrition).
+    -   *Fairlearn MetricFrame* (Audit selection rate across demographics).
+5.  **Output:** Risk Score + Explanation + Fairness Report.
