@@ -1,0 +1,35 @@
+# Dataset Description
+# Employee_Name: Unique identifier for employees.
+# EmpID: Employee ID (numeric unique key).
+# Salary: The annual salary of the employee (Target Variable).
+# Position: Job role or designation of the employee.
+# Department: Department where the employee works (e.g., Sales, IT, HR).
+# MarriedID / MaritalStatusID: Marital status represented as IDs.
+# GenderID: Gender represented as ID.
+# EmpStatusID: Employment status ID.
+# DeptID: Department ID.
+# PerfScoreID: Performance score ID.
+# FromDiversityJobFairID: Diversity indicator.
+# Termd: Whether the employee is terminated (0 or 1).
+# PositionID: Unique ID for the position.
+# Zip: Employee's residential zip code.
+# DOB: Date of Birth.
+# Sex: Gender of the employee.
+# MaritalDesc: Description of marital status.
+# CitizenDesc: Citizenship status.
+# HispanicLatino: Hispanic or Latino indicator.
+# RaceDesc: Ethnic background description.
+# DateofHire: Date the employee started working.
+# DateofTermination: Date the employee left the company.
+# TermReason: Reason for termination.
+# EmploymentStatus: Current employment status description.
+# ManagerName: Name of the employee's manager.
+# ManagerID: Unique ID for the manager.
+# RecruitmentSource: Source from which the employee was recruited.
+# PerformanceScore: Performance evaluation result.
+# EngagementSurvey: Results from the employee engagement survey.
+# EmpSatisfaction: Employee satisfaction score from 1 to 5.
+# SpecialProjectsCount: Number of special projects the employee worked on.
+# LastPerformanceReview_Date: Date of the last performance review.
+# DaysLateLast30: Number of days late in the last 30 days.
+# Absences: Number of absences.
