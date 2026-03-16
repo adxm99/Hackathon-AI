@@ -1,174 +1,206 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
+import joblib
+from datetime import datetime
 
-# Ethical AI constraint: DO NOT use protected attributes:
-# `Employee_Name`, `EmpID`, `DOB`, `Sex`, `MaritalDesc`, `CitizenDesc`, `HispanicLatino`, `RaceDesc`, `MarriedID`, `MaritalStatusID`, `GenderID`.
+# --- Page config ---
+st.set_page_config(
+    page_title="HR Attrition Predictor",
+    page_icon="👥",
+    layout="wide"
+)
+
+# --- Load model and assets ---
+@st.cache_resource
+def load_model():
+    model = joblib.load('lgbm_model.pkl')
+    features = joblib.load('feature_columns.pkl')
+    return model, features
 
 @st.cache_data
-def load_and_preprocess_data():
-    # Load dataset
-    df = pd.read_csv("data/HRDataset_v14.csv")
+def load_data():
+    df = pd.read_csv('employees.csv')
     
-    # 1. Select only relevant numerical/categorical features allowed + target 'Termd'
-    # 'Termd' (1 = resigned/terminated, 0 = active)
-    features_to_keep = ['Salary', 'Absences', 'DaysLateLast30', 
-                        'SpecialProjectsCount', 'EmpSatisfaction', 
-                        'EngagementSurvey', 'Department', 'Termd']
+    # Split into active and already terminated
+    df_active     = df[df['Termd'] == 0].copy()  # only predict on active employees
+    df_terminated = df[df['Termd'] == 1].copy()  # keep for reference
     
-    # Filter columns ensuring they exist (in case of slight name mismatches)
-    available_features = [f for f in features_to_keep if f in df.columns]
-    df_filtered = df[available_features].copy()
-    
-    # Drop rows where target variable is NA (if any, though usually HR dataset target is solid)
-    df_filtered.dropna(subset=['Termd'], inplace=True)
-    
-    # Fill missing values for numericals with median
-    num_cols = df_filtered.select_dtypes(include=[np.number]).columns.drop('Termd')
-    for col in num_cols:
-        df_filtered[col] = df_filtered[col].fillna(df_filtered[col].median())
-        
-    # Fill missing values for categoricals with mode (Department)
-    cat_cols = df_filtered.select_dtypes(include=['object', 'category']).columns
-    for col in cat_cols:
-        df_filtered[col] = df_filtered[col].fillna(df_filtered[col].mode()[0])
-        
-        # Clean up department strings (strip whitespace)
-        if col == 'Department':
-            df_filtered[col] = df_filtered[col].str.strip()
+    return df, df_active, df_terminated
 
-    # Create dummy variables for 'Department'
-    df_processed = pd.get_dummies(df_filtered, columns=['Department'], drop_first=True)
-    
-    # To make predictions from UI easier, keep the original categorical column unique values
-    # for the Streamlit dropdown
-    departments = df_filtered['Department'].dropna().unique().tolist()
-    
-    return df_processed, departments
+model, feature_columns = load_model()
+df_raw, df_active, df_terminated = load_data()
 
-def train_model(df_processed):
-    X = df_processed.drop(columns=['Termd'])
-    y = df_processed['Termd']
-    
-    # Train Decision Tree with max_depth=3 for explainability
-    clf = DecisionTreeClassifier(max_depth=3, random_state=42)
-    clf.fit(X, y)
-    
-    return clf, X.columns
+# --- Seniority computation (must match your notebook exactly) ---
+def compute_seniority(df):
+    df = df.copy()
+    today = datetime.today()
+    df['DateofHire'] = pd.to_datetime(df['DateofHire'])
+    df['Seniority'] = (today - df['DateofHire']).dt.days / 365.25
+    return df
 
-def main():
-    st.set_page_config(page_title="Talent-Keeper AI: Turnover Prediction", page_icon="👩‍💼", layout="wide")
-    
-    st.title("Talent-Keeper AI: Turnover Prediction")
-    st.markdown("""
-    **Objective:** Empower HR teams to proactively identify and mitigate employee turnover risks.
-    This tool utilizes a highly interpretable Decision Tree algorithm that **strictly adheres to Ethical AI principles** by omitting all demographic and protected characteristics (e.g., gender, race, age, marital status).
-    """)
-    
-    # Load data and train model
-    try:
-        df_processed, departments = load_and_preprocess_data()
-        model, feature_names = train_model(df_processed)
-    except FileNotFoundError:
-        st.error("Error: 'data/HRDataset_v14.csv' not found. Please ensure the dataset is in the 'data' folder relative to this script.")
-        return
-        
-    # --- Sidebar: User Input (HR Tool) ---
-    st.sidebar.header("Employee Profile Simulation")
-    st.sidebar.markdown("Adjust parameters to simulate an employee profile and estimate turnover risk.")
-    
-    # Define default values based roughly on generic dataset medians/modes for better UX
-    sim_salary = st.sidebar.slider("Salary ($)", min_value=30000, max_value=250000, value=65000, step=1000)
-    sim_absences = st.sidebar.slider("Absences (Days)", min_value=0, max_value=30, value=5)
-    sim_days_late = st.sidebar.slider("Days Late (Last 30 Days)", min_value=0, max_value=20, value=0)
-    sim_projects = st.sidebar.slider("Special Projects Count", min_value=0, max_value=15, value=0)
-    sim_satisfaction = st.sidebar.slider("Employee Satisfaction (1-5)", min_value=1, max_value=5, value=3)
-    sim_engagement = st.sidebar.slider("Engagement Survey Score", min_value=1.0, max_value=5.0, value=3.0, step=0.1)
-    sim_dept = st.sidebar.selectbox("Department", departments)
+# --- Feature engineering (must match your notebook exactly) ---
+def prepare_features(df):
+    df = compute_seniority(df)
 
-    # Reconstruct input dataframe matching model features
-    input_data = pd.DataFrame(0, index=[0], columns=feature_names) # Initialize with 0s (for one-hot encoded cols)
-    
-    input_data.loc[0, 'Salary'] = sim_salary
-    input_data.loc[0, 'Absences'] = sim_absences
-    input_data.loc[0, 'DaysLateLast30'] = sim_days_late
-    input_data.loc[0, 'SpecialProjectsCount'] = sim_projects
-    input_data.loc[0, 'EmpSatisfaction'] = sim_satisfaction
-    input_data.loc[0, 'EngagementSurvey'] = sim_engagement
-    
-    # Set the one-hot encoded department feature to 1 if it matches (and exists in columns)
-    dept_col = f"Department_{sim_dept}"
-    if dept_col in input_data.columns:
-        input_data.loc[0, dept_col] = 1
-        
-    # Make Prediction
-    risk_proba = model.predict_proba(input_data)[0][1] # Probability of class 1 (Termd)
-    risk_percentage = risk_proba * 100
-    
-    # Output Layout
-    col1, col2 = st.columns([1, 1.5])
-    
-    with col1:
-        st.subheader("Departure Risk Score")
-        # Color code the result nicely
-        if risk_percentage > 50:
-            st.error(f"### ⚠️ {risk_percentage:.1f}%")
-        elif risk_percentage > 25:
-            st.warning(f"### 🟡 {risk_percentage:.1f}%")
-        else:
-            st.success(f"### ✅ {risk_percentage:.1f}%")
-            
-        # --- Prescriptive AI ---
-        st.subheader("💡 Recommendation")
-        if risk_percentage > 50:
-            st.markdown("Immediate action is recommended to retain this talent.")
-            
-            # Simple business rules finding the "most penalizing" feature conceptually
-            # In a shallow tree, we can just look at user inputs vs thresholds, but for simplicity:
-            if sim_satisfaction <= 2:
-                st.info("🎯 **Targeted Action**: Employee satisfaction is very low. Schedule a one-on-one "
-                        "listen-only session to address their specific frustrations.")
-            elif sim_engagement < 3.0:
-                st.info("🎯 **Targeted Action**: Engagement is slipping. Recommend involving the employee in a new "
-                        "collaboration initiative or project to boost inclusion.")
-            elif sim_salary < 60000 and sim_projects > 3:
-                st.info("🎯 **Targeted Action**: High workload (projects) relative to salary. Review the compensation "
-                        "bracket or consider a spot bonus/promotion.")
-            elif sim_absences > 15:
-                st.info("🎯 **Targeted Action**: High absenteeism detected. Have HR/Mgmt conduct a well-being check "
-                        "to ensure work-life balance or health issues are supported.")
-            elif sim_days_late > 3:
-                 st.info("🎯 **Targeted Action**: Frequent tardiness. Discuss workflow flexibility or potential burnout signals in a managerial one-on-one.")
-            else:
-                st.info("🎯 **Targeted Action**: Schedule a comprehensive retention interview to explore overall job satisfaction and career goals.")
-        else:
-             st.markdown("Risk is currently under control. Continue standard engagement protocols.")
+    # Fix string spaces before one-hot encoding
+    string_columns = df.select_dtypes(include=['object', 'string']).columns
+    for col in string_columns:
+        df[col] = df[col].astype(str).str.strip().str.replace(r'\s+', ' ', regex=True)
 
-    with col2:
-        # --- Explainable AI (XAI) ---
-        st.subheader("📊 Global Feature Importances")
-        st.markdown("This chart explains *which criteria* the AI model relies on globally to make its predictions. This builds trust and transparency.")
-        
-        # Get importances
-        importances = model.feature_importances_
-        # Sort them for better plotting (top 5-7 is usually enough)
-        feature_imp_df = pd.DataFrame({'Feature': feature_names, 'Importance': importances})
-        feature_imp_df = feature_imp_df[feature_imp_df['Importance'] > 0] # Filter 0 importance
-        feature_imp_df = feature_imp_df.sort_values(by='Importance', ascending=True)
-        
-        # Plot using matplotlib (or streamlit's native bar chart for simplicity)
-        fig, ax = plt.subplots(figsize=(6, 4))
-        # Better labels (removing 'Department_' prefix for readability)
-        clean_labels = [label.replace('Department_', 'Dept: ') for label in feature_imp_df['Feature']]
-        ax.barh(clean_labels, feature_imp_df['Importance'], color='skyblue')
-        # ax.set_xlabel('Relative Importance')
-        ax.spines['right'].set_visible(False)
-        ax.spines['top'].set_visible(False)
-        plt.tight_layout()
-        st.pyplot(fig)
-        
-if __name__ == '__main__':
-    main()
+    # Map PerformanceScore to numeric
+    performance_mapping = {'PIP': 1, 'Needs Improvement': 2, 'Fully Meets': 3, 'Exceeds': 4}
+    df['PerformanceScore'] = df['PerformanceScore'].map(performance_mapping)
+
+    # IMPORTANT: LightGBM needs explicit types for object -> numeric mappings
+    # If there are missing values after mapping or unmapped values, they stay float/NaN causing object type inference later
+    df['PerformanceScore'] = pd.to_numeric(df['PerformanceScore'], errors='coerce').fillna(3) # Default to fully meets
+
+    # Calculate DaysSinceLastReview (if it was included in training logic, depending on user's df_raw)
+    # The error came from PerformanceScore type, let's make sure it's strictly numeric
+
+    # One-hot encode categorical columns
+    categorical_cols = ['Position', 'Department', 'ManagerName', 'RecruitmentSource']
+    df_encoded = pd.get_dummies(df, columns=categorical_cols)
+
+    # Drop leaky and ID columns
+    cols_to_drop = ['EmpID', 'MarriedID', 'GenderID', 'DeptID', 'PositionID',
+                    'ManagerID', 'MaritalStatusID', 'EmpStatusID',
+                    'DateofHire', 'Employee_Name', 'DateofTermination', 'TermReason', 'EmploymentStatus']
+    df_encoded = df_encoded.drop(columns=[c for c in cols_to_drop if c in df_encoded.columns])
+
+    # Align columns to match training features exactly as loaded from joblib
+    df_encoded = df_encoded.reindex(columns=feature_columns, fill_value=0)
+    
+    # Final safety check: force all boolean one-hot columns to standard int/float
+    # just in case LightGBM struggles with pandas internal boolean arrays
+    for col in df_encoded.columns:
+        df_encoded[col] = pd.to_numeric(df_encoded[col], errors='coerce').fillna(0)
+
+    # Drop leaky and ID columns
+    cols_to_drop = ['EmpID', 'MarriedID', 'GenderID', 'DeptID', 'PositionID',
+                    'ManagerID', 'MaritalStatusID', 'EmpStatusID',
+                    'DateofHire', 'Employee_Name']
+    df_encoded = df_encoded.drop(columns=[c for c in cols_to_drop if c in df_encoded.columns])
+
+    # Align columns to match training features
+    df_encoded = df_encoded.reindex(columns=feature_columns, fill_value=0)
+
+    return df_encoded
+
+# --- Run predictions ---
+def get_predictions(df_raw):
+    X = prepare_features(df_raw)
+    probabilities = model.predict_proba(X)[:, 1]
+    return probabilities
+
+# ============================================================
+#                        UI
+# ============================================================
+
+st.title("👥 HR Attrition Risk Predictor")
+st.markdown("Predict the probability of contract termination for each employee using LightGBM.")
+st.divider()
+
+# --- Run predictions ---
+with st.spinner("Running predictions..."):
+    df_active = compute_seniority(df_active)
+    df_active['Termination_Probability'] = get_predictions(df_active)
+    df_active['Risk_Level'] = pd.cut(
+        df_active['Termination_Probability'],
+        bins=[0, 0.08, 0.25, 1.0],
+        labels=['🟢 Low', '🟡 Medium', '🔴 High']
+    )
+
+# --- Sidebar filters ---
+st.sidebar.header("🔍 Filters")
+
+risk_filter = st.sidebar.multiselect(
+    "Filter by Risk Level",
+    options=['🟢 Low', '🟡 Medium', '🔴 High'],
+    default=['🟢 Low', '🟡 Medium', '🔴 High']
+)
+
+dept_filter = st.sidebar.multiselect(
+    "Filter by Department",
+    options=sorted(df_active['Department'].unique()),
+    default=sorted(df_active['Department'].unique())
+)
+
+top_n = st.sidebar.slider("Show top N at-risk employees", 5, 50, 10)
+
+# --- Apply filters ---
+df_filtered = df_active[
+    df_active['Risk_Level'].isin(risk_filter) &
+    df_active['Department'].isin(dept_filter)
+].sort_values('Termination_Probability', ascending=False)
+
+# --- KPI cards ---
+col1, col2, col3, col4 = st.columns(4)
+col1.metric("Total Active Employees", len(df_active))
+col2.metric("🔴 High Risk",   len(df_active[df_active['Risk_Level'] == '🔴 High']))
+col3.metric("🟡 Medium Risk", len(df_active[df_active['Risk_Level'] == '🟡 Medium']))
+col4.metric("🟢 Low Risk",    len(df_active[df_active['Risk_Level'] == '🟢 Low']))
+
+st.divider()
+
+# --- Top at-risk employees table ---
+st.subheader(f"🔴 Top {top_n} Employees at Highest Risk")
+
+display_cols = ['Employee_Name', 'Department', 'Position',
+                'Seniority', 'Termination_Probability', 'Risk_Level']
+
+df_display = df_filtered[display_cols].head(top_n).copy()
+df_display['Seniority'] = df_display['Seniority'].round(1).astype(str) + ' yrs'
+df_display['Termination_Probability'] = (
+    df_display['Termination_Probability'] * 100
+).round(1).astype(str) + '%'
+
+st.dataframe(
+    df_display.rename(columns={
+        'Employee_Name': 'Employee',
+        'Termination_Probability': 'Risk %',
+        'Risk_Level': 'Risk Level'
+    }),
+    use_container_width=True,
+    hide_index=True
+)
+
+st.divider()
+
+# --- Individual employee lookup ---
+st.subheader("🔎 Individual Employee Lookup")
+
+employee_name = st.selectbox(
+    "Select an employee",
+    options=sorted(df_active['Employee_Name'].unique())
+)
+
+emp_row = df_active[df_active['Employee_Name'] == employee_name].iloc[0]
+prob = emp_row['Termination_Probability']
+
+col1, col2, col3 = st.columns(3)
+col1.metric("Employee",   emp_row['Employee_Name'])
+col2.metric("Department", emp_row['Department'])
+col3.metric("Seniority",  f"{emp_row['Seniority']:.1f} years")
+
+# Risk gauge
+st.markdown(f"### Termination Risk: `{prob*100:.1f}%`")
+st.progress(float(prob))
+
+if prob >= 0.6:
+    st.error(f"🔴 **High Risk** — Immediate retention action recommended")
+elif prob >= 0.3:
+    st.warning(f"🟡 **Medium Risk** — Monitor and engage this employee")
+else:
+    st.success(f"🟢 **Low Risk** — Employee appears stable")
+
+st.divider()
+
+with st.expander("📋 Already Terminated Employees"):
+    df_terminated = compute_seniority(df_terminated)
+    st.dataframe(
+        df_terminated[['Employee_Name', 'Department', 'Position', 'Seniority']],
+        use_container_width=True,
+        hide_index=True
+    )
