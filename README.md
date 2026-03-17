@@ -110,14 +110,12 @@ To ensure transparency, employees will be informed about the system and how thei
 
 ## Instructions  
 ### 1. Clone the repository  
-(code)
+git clone https://github.com/your-repository/Hackathon-AI.git
 
 ### 2. Install required dependencies  
-(code)
+pip install -r requirements.txt
 
-### 3. Run the Streamlit application  
-(code)
+### 3. Run the Streamlit application
+streamlit run app.py
 
-### 4. Open the application  
-(text)
 
