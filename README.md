@@ -106,27 +106,18 @@ To ensure transparency, employees will be informed about the system and how thei
 
 ---
 
-## Instructions
 
-### 1. Clone the repository
-pip install -r requirements.txt
 
-```bash
-git clone https://github.com/your-repository/Hackathon-AI.git
-cd Hackathon-AI
+## Instructions  
+### 1. Clone the repository  
+(code)
 
-Install required dependencies
+### 2. Install required dependencies  
+(code)
 
-pip install -r requirements.txt
+### 3. Run the Streamlit application  
+(code)
 
-Run the Streamlit application
+### 4. Open the application  
+(text)
 
-streamlit run app.py
-
-Open the application in your browser to explore the HR dashboard and attrition predictions.
-
-Expected Outcome
-
-This project provides a practical example of how AI can support HR decision-making in a responsible and transparent way.
-
-By combining predictive analytics, explainable AI, and strong data governance principles, the solution helps organizations move from reactive responses to employee turnover toward a proactive and data-driven talent retention strategy.
