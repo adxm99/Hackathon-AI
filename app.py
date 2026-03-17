@@ -538,6 +538,230 @@ else:
     </div>""", unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
+
+# ─────────────────────────────────────────────
+#  EXPLAINABILITY BUTTON
+# ─────────────────────────────────────────────
+
+# ── Feature → human sentence templates ──────
+# Each entry: (condition_fn, risk_sentence, protective_sentence)
+# condition_fn receives the raw feature value
+FEATURE_TEMPLATES = {
+    'Seniority': {
+        'label': 'Seniority',
+        'unit': 'years',
+        'risk':       lambda v: (f"Low seniority ({v:.1f} yrs) is the strongest risk signal — new employees leave at a much higher rate." if v < 5 else f"Seniority ({v:.1f} yrs) is unexpectedly contributing to risk (possible career stagnation)."),
+        'protective': lambda v: (f"High seniority ({v:.1f} yrs) is a strong stabilising factor — long-tenured employees rarely leave." if v >= 5 else f"Despite low seniority ({v:.1f} yrs), turnover risk is lowered here."),
+    },
+    'SpecialProjectsCount': {
+        'label': 'Special Projects',
+        'unit': 'projects',
+        'risk':       lambda v: (f"Only {int(v)} special project(s) assigned — little project involvement often correlates with disengagement." if v <= 1 else f"{int(v)} special project(s) assigned — high workload might be contributing to burnout risk."),
+        'protective': lambda v: (f"{int(v)} special project(s) assigned — active project involvement is a strong retention signal." if v > 1 else f"Having {int(v)} special project(s) is acting as a protective factor for this employee."),
+    },
+    'Salary': {
+        'label': 'Salary',
+        'unit': '$',
+        'risk':       lambda v: (f"Salary of ${int(v):,} is below average — compensation may be a contributing risk factor." if v < 70000 else f"Salary of ${int(v):,} is high, yet evaluated as a risk factor (possible mismatch with market or expectations)."),
+        'protective': lambda v: (f"Salary of ${int(v):,} is competitive — compensation helps retain this employee." if v >= 60000 else f"Salary of ${int(v):,} is acting as a protective factor in this context."),
+    },
+    'EngagementSurvey': {
+        'label': 'Engagement Score',
+        'unit': '/5',
+        'risk':       lambda v: (f"Engagement survey score of {v:.2f}/5 is low — disengaged employees are significantly more likely to leave." if v < 3.5 else f"Engagement survey score of {v:.2f}/5 is unexpectedly acting as a risk factor here."),
+        'protective': lambda v: (f"High engagement score of {v:.2f}/5 — this employee is actively invested in their role." if v >= 3.5 else f"Engagement survey score of {v:.2f}/5 is curiously evaluated as a protective factor here."),
+    },
+    'EmpSatisfaction': {
+        'label': 'Job Satisfaction',
+        'unit': '/5',
+        'risk':       lambda v: (f"Job satisfaction score of {int(v)}/5 is below average — dissatisfaction is a leading predictor of turnover." if v <= 3 else f"Job satisfaction score of {int(v)}/5 is unexpectedly contributing to turnover risk for this profile."),
+        'protective': lambda v: (f"Job satisfaction score of {int(v)}/5 is strong — the employee feels valued." if v >= 4 else f"Job satisfaction score of {int(v)}/5 is acting as a protective retention factor."),
+    },
+    'Absences': {
+        'label': 'Absences',
+        'unit': 'days',
+        'risk':       lambda v: (f"{int(v)} absence days recorded — elevated absenteeism is strongly correlated with disengagement." if v >= 10 else f"{int(v)} absence days is contributing to attrition risk."),
+        'protective': lambda v: (f"Only {int(v)} absence day(s) — regular attendance reflects stable commitment." if v < 10 else f"{int(v)} absence days is surprisingly acting as a protective factor."),
+    },
+    'DaysLateLast30': {
+        'label': 'Days Late (Last 30)',
+        'unit': 'days',
+        'risk':       lambda v: (f"{int(v)} late arrival(s) in the last 30 days — repeated lateness often signals declining commitment." if v > 0 else f"{int(v)} late arrivals is adding to risk."),
+        'protective': lambda v: (f"No late arrivals in the last 30 days — punctuality reflects engagement." if v == 0 else f"{int(v)} late arrivals is evaluated as a protective factor."),
+    },
+    'PerformanceScore': {
+        'label': 'Performance Score',
+        'unit': '',
+        'risk':       lambda v: (f"Performance score of {int(v)}/4 indicates underperformance — low performers are at elevated risk." if v <= 2 else f"Strong performance score of {int(v)}/4 may indicate they are seeking external opportunities."),
+        'protective': lambda v: (f"Performance score of {int(v)}/4 — strong performance is a key retention anchor." if v >= 3 else f"Performance score of {int(v)}/4 acts to decrease turnover risk in this context."),
+    },
+}
+
+# One-hot feature groups
+OHE_TEMPLATES = {
+    'RecruitmentSource_Diversity Job Fair': {
+        'risk':       "Recruited via a Diversity Job Fair — historically, this source shows higher early attrition rates in this dataset.",
+        'protective': None,
+    },
+    'RecruitmentSource_LinkedIn': {
+        'risk':       None,
+        'protective': "Recruited via LinkedIn — this source is associated with higher retention rates.",
+    },
+    'RecruitmentSource_Employee Referral': {
+        'risk':       None,
+        'protective': "Recruited via Employee Referral — referral hires are among the most stable employees.",
+    },
+    'Department_Production': {
+        'risk':       "Works in the Production department — this department shows the highest historical attrition rate.",
+        'protective': None,
+    },
+    'Department_Software Engineering': {
+        'risk':       None,
+        'protective': "Works in Software Engineering — this department shows strong retention figures.",
+    },
+}
+
+@st.cache_resource
+def get_shap_explainer(_model, _X_background):
+    import shap
+    return shap.TreeExplainer(_model)
+
+def explain_employee(emp_name):
+    import shap
+
+    # Get the feature row for this employee
+    idx      = df_active[df_active['Employee_Name'].str.strip() == emp_name].index[0]
+    X_emp    = prepare_features(df_active.loc[[idx]])
+
+    explainer   = get_shap_explainer(model, X_emp)
+    shap_values = explainer.shap_values(X_emp)
+
+    # For binary classifiers, shap_values may be a list [class0, class1] or a single array
+    if isinstance(shap_values, list):
+        sv = shap_values[1][0]
+    else:
+        sv = shap_values[0]
+
+    feature_names = X_emp.columns.tolist()
+    shap_series   = pd.Series(sv, index=feature_names).sort_values(key=abs, ascending=False)
+
+    # Get raw values for this employee (before encoding)
+    raw = df_active.loc[idx]
+
+    risk_factors       = []
+    protective_factors = []
+    used               = set()
+
+    for feat, shap_val in shap_series.items():
+        if len(risk_factors) >= 3 and len(protective_factors) >= 3:
+            break
+        if abs(shap_val) < 0.05:
+            continue
+
+        # Numeric features
+        if feat in FEATURE_TEMPLATES and feat not in used:
+            tmpl    = FEATURE_TEMPLATES[feat]
+            raw_val = raw.get(feat, None)
+            if raw_val is None:
+                continue
+            
+            if feat == 'PerformanceScore' and isinstance(raw_val, str):
+                perf_map = {'PIP': 1, 'Needs Improvement': 2, 'Fully Meets': 3, 'Exceeds': 4}
+                raw_val = perf_map.get(raw_val.strip(), 3)
+                
+            raw_val = float(raw_val)
+            used.add(feat)
+            if shap_val > 0 and len(risk_factors) < 3:
+                risk_factors.append((feat, shap_val, tmpl['risk'](raw_val)))
+            elif shap_val < 0 and len(protective_factors) < 3:
+                protective_factors.append((feat, shap_val, tmpl['protective'](raw_val)))
+
+        # One-hot features
+        elif feat in OHE_TEMPLATES and feat not in used:
+            tmpl = OHE_TEMPLATES[feat]
+            used.add(feat)
+            if shap_val > 0 and tmpl['risk'] and len(risk_factors) < 3:
+                risk_factors.append((feat, shap_val, tmpl['risk']))
+            elif shap_val < 0 and tmpl['protective'] and len(protective_factors) < 3:
+                protective_factors.append((feat, shap_val, tmpl['protective']))
+
+    return risk_factors, protective_factors, shap_series
+
+# ── Button + reveal ─────────────────────────
+if st.button("🔍 Explain this prediction", use_container_width=True):
+    with st.spinner("Computing SHAP explanations…"):
+        try:
+            risk_factors, protective_factors, shap_series = explain_employee(employee_name)
+
+            # ── Opening verdict sentence ────────────
+            if prob >= 0.25:
+                verdict = f"The model assigns <b>{employee_name.strip()}</b> a <span style='color:#ef4444;font-weight:700'>{prob*100:.1f}% termination risk</span> — classified as <b>High Risk</b>. The following factors drive this prediction:"
+            elif prob >= 0.08:
+                verdict = f"The model assigns <b>{employee_name.strip()}</b> a <span style='color:#f59e0b;font-weight:700'>{prob*100:.1f}% termination risk</span> — classified as <b>Medium Risk</b>. Several mixed signals were detected:"
+            else:
+                verdict = f"The model assigns <b>{employee_name.strip()}</b> a <span style='color:#22c55e;font-weight:700'>{prob*100:.1f}% termination risk</span> — classified as <b>Low Risk</b>. Protective factors dominate this profile:"
+
+            # ── Build risk factor pills ─────────────
+            def shap_bar(val, color):
+                width = min(abs(val) * 200, 100)
+                return f'<div style="display:inline-block;height:6px;width:{width:.0f}px;background:{color};border-radius:99px;vertical-align:middle;margin-right:8px"></div>'
+
+            risk_html = ""
+            for feat, sv, sentence in risk_factors:
+                bar = shap_bar(sv, '#ef4444')
+                risk_html += (
+                    f'<div style="display:flex;align-items:flex-start;gap:0.8rem;'
+                    f'background:#1a0a0a;border:1px solid #ef444430;border-radius:10px;'
+                    f'padding:0.8rem 1rem;margin-bottom:0.5rem">'
+                    f'<span style="color:#ef4444;font-size:1rem;margin-top:2px">↑</span>'
+                    f'<div>'
+                    f'{bar}'
+                    f'<span style="color:#94a3b8;font-size:0.83rem">{sentence}</span>'
+                    f'</div></div>'
+                )
+
+            prot_html = ""
+            for feat, sv, sentence in protective_factors:
+                bar = shap_bar(sv, '#22c55e')
+                prot_html += (
+                    f'<div style="display:flex;align-items:flex-start;gap:0.8rem;'
+                    f'background:#0a1a0a;border:1px solid #22c55e30;border-radius:10px;'
+                    f'padding:0.8rem 1rem;margin-bottom:0.5rem">'
+                    f'<span style="color:#22c55e;font-size:1rem;margin-top:2px">↓</span>'
+                    f'<div>'
+                    f'{bar}'
+                    f'<span style="color:#94a3b8;font-size:0.83rem">{sentence}</span>'
+                    f'</div></div>'
+                )
+
+            if not risk_html:
+                risk_html = '<p style="color:#475569;font-size:0.82rem;font-style:italic">No significant risk factors identified.</p>'
+            if not prot_html:
+                prot_html = '<p style="color:#475569;font-size:0.82rem;font-style:italic">No significant protective factors identified.</p>'
+
+            html_content = (
+                '<div style="background:#0f1420;border:1px solid #1e2535;border-radius:14px;padding:1.5rem 1.8rem;margin-top:0.5rem">'
+                '<p style="font-family:Syne,sans-serif;font-size:0.65rem;color:#334155;'
+                'text-transform:uppercase;letter-spacing:0.1em;margin:0 0 0.8rem">Decision Explanation · SHAP Analysis</p>'
+                f'<p style="color:#cbd5e1;font-size:0.88rem;line-height:1.6;margin-bottom:1.4rem">{verdict}</p>'
+                '<p style="font-family:Syne,sans-serif;font-size:0.7rem;color:#ef4444;'
+                'text-transform:uppercase;letter-spacing:0.1em;margin:0 0 0.6rem">⬆ Risk-Increasing Factors</p>'
+                f'{risk_html}'
+                '<p style="font-family:Syne,sans-serif;font-size:0.7rem;color:#22c55e;'
+                'text-transform:uppercase;letter-spacing:0.1em;margin:1rem 0 0.6rem">⬇ Protective Factors</p>'
+                f'{prot_html}'
+                '<p style="font-size:0.7rem;color:#1e2d45;margin:1.2rem 0 0;font-style:italic">'
+                'SHAP (SHapley Additive exPlanations) measures each feature\'s marginal contribution to the prediction. '
+                '↑ pushes risk up · ↓ pushes risk down. Bar width reflects magnitude.'
+                '</p>'
+                '</div>'
+            )
+            st.markdown(html_content, unsafe_allow_html=True)
+
+        except Exception as e:
+            st.error(f"Could not compute explanation: {e}")
+
+st.markdown("<br>", unsafe_allow_html=True)
 st.divider()
 
 # ─────────────────────────────────────────────
