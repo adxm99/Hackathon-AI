@@ -1,0 +1,77 @@
+# Data Card
+
+## 1. Dataset Overview
+- **Name**: HRDataset_v14
+- **Type**: Structured tabular dataset
+- **Domain**: Human Resources
+- **Objective**: Predict employee attrition (turnover)
+
+## 2. Data Source
+- Dataset provided in the hackathon context
+- Based on HR employee records
+- Modified during the project for modeling purposes
+
+## 3. Dataset Composition
+- **Number of samples**: ~400 employees
+- **Number of features**: ~30+ variables
+
+**Feature categories**:
+- **Demographic**:
+  - Age, Gender
+- **Professional**:
+  - Position, Department
+- **Performance**:
+  - PerformanceScore
+- **Behavioral**:
+  - Absences, Satisfaction
+- **Derived features**:
+  - Seniority (computed from Date of Hire)
+
+## 4. Target Variable
+- **Termd**
+  - 1 → Employee left
+  - 0 → Employee stayed
+
+## 5. Data Preprocessing
+- Cleaning text values (format normalization)
+- **Feature engineering**:
+  - Computation of Seniority
+- **Encoding**:
+  - One-hot encoding for categorical variables
+- **Feature alignment**:
+  - Using feature_columns.pkl
+- **Removal of non-relevant columns**:
+  - Employee_Name
+  - IDs
+  - DateofTermination
+  - TermReason
+
+## 6. Added Data / Modifications
+- Additional engineered feature:
+  - Seniority
+- Selection of relevant variables for prediction
+- Alignment with model input format
+
+## 7. Data Quality
+**Strengths**:
+- Structured dataset
+- Relevant HR variables
+- Ready for ML modeling
+
+**Limitations**:
+- Limited size (~400 samples)
+- Possible class imbalance
+- Static dataset (no time evolution)
+
+## 8. Limitations
+- May not generalize to other companies or industries
+- Some employee behaviors are not captured
+- Predictions depend heavily on available variables
+
+## 9. Usage Constraints
+- **Dataset intended for**:
+  - Predictive modeling
+  - Analytical purposes
+- **Not intended for**:
+  - Real-world deployment without validation
+  - Critical decision-making without human oversight

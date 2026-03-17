@@ -1,0 +1,42 @@
+# Documentation Technique : PeopleIQ
+
+## 1. Vue d'ensemble
+**PeopleIQ** est une solution d'aide à la décision basée sur l'intelligence artificielle, conçue pour anticiper l'attrition des employés au sein d'une entreprise industrielle européenne. L'objectif est de transformer une gestion RH réactive en une stratégie proactive de rétention des talents.
+
+## 2. Architecture des Données
+Le système s'appuie sur une analyse de données RH structurées.
+* **Source :** `HRDataset_v14.csv`, comprenant environ 400 enregistrements d'employés.
+* **Variable Cible :** `Termd` (1 pour les employés ayant quitté l'entreprise, 0 pour les employés actifs).
+* **Variables d'entrée (Features) :** * **Performance :** Scores de performance et enquêtes de satisfaction.
+    * **Engagement :** Participation à des projets spéciaux et absentéisme.
+    * **Profil :** Ancienneté (calculée dynamiquement), salaire, département et source de recrutement.
+
+## 3. Spécifications du Modèle
+* **Algorithme :** Classifieur **LightGBM**.
+* **Performance :** ROC AUC de **0.93** (établi par validation croisée).
+* **Ingénierie des caractéristiques :**
+    * Calcul de l'ancienneté à partir de la date d'embauche (`DateofHire`).
+    * Encodage des variables catégorielles (Poste, Département, Source de recrutement) via One-Hot Encoding.
+    * Nettoyage et standardisation des scores de performance.
+
+## 4. Explicabilité (XAI)
+Pour garantir la transparence et éviter l'effet "boîte noire", PeopleIQ utilise la bibliothèque **SHAP** (SHapley Additive exPlanations).
+* **Fonction :** Le modèle décompose chaque prédiction pour identifier l'influence spécifique de chaque variable.
+* **Visualisation :** Les facteurs sont classés en "Facteurs de risque" (augmentant la probabilité de départ) et "Facteurs protecteurs" (diminuant le risque).
+
+## 5. Interface Utilisateur
+L'application est développée avec **Streamlit** et comprend :
+* **Dashboard Global :** Indicateurs clés (KPI) sur le volume d'employés à risque (Haut, Moyen, Bas).
+* **Analyse Individuelle :** Recherche par employé affichant son score de risque exact et les recommandations associées.
+* **Filtrage Dynamique :** Possibilité de filtrer par département, niveau de risque ou top N des profils les plus critiques.
+
+## 6. Conformité et Éthique
+Le projet suit une approche de **privacy-by-design** conforme au RGPD.
+* **Minimisation des données :** Suppression des identifiants personnels directs (ex: noms des managers) pour l'entraînement du modèle.
+* **Base légale :** Traitement fondé sur l'intérêt légitime de l'employeur à assurer la continuité opérationnelle et le bien-être au travail.
+* **Gouvernance :** L'outil est strictement consultatif ; toute action RH nécessite une revue humaine préalable.
+
+## 7. Stack Technique
+* **Langage :** Python.
+* **Data Science :** Pandas, Numpy, Scikit-learn, LightGBM, SHAP.
+* **Déploiement :** Streamlit, Joblib (sérialisation du modèle).
